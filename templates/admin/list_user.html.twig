@@ -1,0 +1,19 @@
+{% extends "base.html.twig" %}
+{% block title %} Liste des utilisateurs{% endblock %}
+{%block body %}
+    <h1>Bienvenue sur la liste des utilisateurs</h1>
+
+    <!-- La synthaxe ci-dessous est un commentaire twig (Ctrl maj c) -->
+    {# TODO generate user list #}
+
+    {# <?php foreach($users as $user : ?> #}
+    <ul>
+        {% for user in users %}
+            <li>
+                {#        <?= html.specialchars($user->getFirstname()); ?> #}
+                {{ user.firstname }} {{user.lastname }} 
+            </li>
+            {# <?php endforeach; ?>#}
+        {% endfor %}
+    </ul>
+{% endblock %}
