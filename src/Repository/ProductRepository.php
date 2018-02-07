@@ -12,7 +12,25 @@ class ProductRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Product::class);
     }
-
+    
+    // function pour éviter d'afficher les 40 requetes
+    public function findAllWithTags() {
+        return $this->createQueryBuilder('p')
+                ->leftJoin('p.tags', 't')
+                ->addSelect('t')
+                ->getQuery()
+                ->getResult();
+    }
+    public function findByTagWithTags($tag){
+        return $this->createQueryBuilder('p')
+                ->leftJoin('p.tags', 't')
+                ->addSelect('t')
+                ->where('t.id = :id')
+                ->setParameter(':id', $tag->getId())
+                ->getQuery()
+                ->getResult();
+                
+    }           
     /*
     public function findBySomething($value)
     {
