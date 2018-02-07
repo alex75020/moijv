@@ -11,7 +11,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 class ProductFixture extends Fixture implements DependentFixtureInterface {
 
     public function load(ObjectManager $manager) {
-        for ($i = 0; $i <= 40; $i++) {
+        for ($i = 1; $i <= 40; $i++) {
             $product = new Product();
             $product->setName('Product n°'.$i);
             $product->setDescription("Description of Product n°".$i);
