@@ -41,6 +41,7 @@ class LoadController extends Controller
             // Enregistrement du produit
             $manager->persist($product);
             $manager->flush();
+            return $this->redirectToRoute('my_products');
             
            
             
