@@ -5,12 +5,13 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User
-{
+class User implements UserInterface, \Serializable {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -23,47 +24,90 @@ class User
      * @var string 
      */
     private $lastname;
-    
+
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      * @var string 
      */
     private $firstname;
-    
+
     /**
      * @ORM\Column(type="string", length=255)
      * @var string 
      */
     private $email;
-    
+
     /**
      * @ORM\Column(type="string", length=255)
      * @var string 
      */
     private $password;
-    
+
     /**
      * @ORM\Column(type="string", length=100)
      * @var string 
      */
     private $username;
-    
+
     /**
      * @ORM\Column(type="date")
      * @var \DateTime 
      */
     private $birthdate;
-    
+
     /**
      * @ORM\OneToMany(targetEntity="Product", mappedBy="user")
      * @var Collection
      */
     private $products;
-    
+
+    /**
+     * @ORM\Column(type="string")
+     * @var string 
+     */
+    private $roles;
+
     public function __construct() {
         $this->products = new ArrayCollection();
     }
-    
+
+    public function setRoles($roles) {
+        $this->roles = $roles;
+        return $this;
+    }
+
+    public function getSalt() {
+        return null;
+    }
+
+    public function getRoles() {
+        // Nos roles seront stocké en format : "ROLE_USER|ROLE_ADMIN"
+        return \explode('|', $this->roles);
+    }
+
+    public function eraseCredentials() {
+        
+    }
+
+    /** @see \Serializable::serialize() */
+    public function serialize() {
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+                // see section on salt below
+                // $this->salt,
+        ));
+    }
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized) {
+        list (
+                $this->id,
+                $this->username,
+                $this->password,
+                ) = unserialize($serialized);
+    }
+
     public function getProducts(): Collection {
         return $this->products;
     }
@@ -73,7 +117,6 @@ class User
         return $this;
     }
 
-        
     public function getId() {
         return $this->id;
     }
@@ -136,6 +179,5 @@ class User
         $this->birthdate = $birthdate;
         return $this;
     }
-
 
 }

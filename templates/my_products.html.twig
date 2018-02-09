@@ -1,0 +1,15 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Mes produits {% endblock %}
+
+{% block body %}
+          {# on peut acceder à l'utilisateur connecté grace a la variable app #}
+    <h1>Mes produits</h1>
+    <ul>
+        {% for product in app.user.products %}
+            <li>{{ product.name}} </li>
+        {% endfor %}
+    </ul>
+ {% endblock %}
+ 
+ 
